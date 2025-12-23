@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime X</title>
+    <style>
+        body {
+            background-image: url('Rim.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+        }
+
+        .sign{
+            background-color: #39ff14;
+            color:yellowgreen ;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            font-weight: bold;
+        }
+        .sign:hover{
+            background-color: #FF6700;
+            transform: scale(1.05);
+        }
+        .log{
+            background-color: #BC13FE;
+            color:yellow ;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: 0.4s;
+            font-weight: bold;
+            border: none;
+        }
+        .log:hover{
+            background-color: transparent;
+            transform: scale(1.05);
+            font-weight: lighter;
+        }
+        .navbar{
+            background: linear-gradient(#004085,#007bff);
+            overflow: hidden;
+            padding: 30px 100px;
+        }
+        ul{
+            list-style: none;
+        }
+        #H{
+            position: absolute;
+            top: 20px;
+            left: 150px;
+            font-size: xx-large;
+        }
+        #C{
+            position: absolute;
+            top: 20px;
+            left: 450px;
+            font-size: xx-large;
+        }
+        #A{
+            position: absolute;
+            top: 20px;
+            right: 570px;
+            font-size: xx-large;
+        }
+        #P{
+            position: absolute;
+            top: 20px;
+            right: 250px;
+            font-size: xx-large;
+        }
+        .error{
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .success{
+            color: #4caf50;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .input-group{
+            margin-bottom: 20px;
+        }
+        input.invalid{
+            border: 2px solid #ff4444;
+        }
+        input{
+            height: 30px;
+            width: 160px;
+            border-radius: 9px;
+            border: 2px solid #ccc;
+            padding: 5px;
+        }
+        .password-strength{
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .strength-weak{ color: #ff4444; }
+        .strength-medium{ color: #ff9800; }
+        .strength-strong{ color: #4caf50; }
+        .loading{
+            display: none;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li id="H"><a href="Homepage.html" style="text-decoration: none; color: black;">Home</a></li>
+            <li id="C"><a href="Chat.html" style="text-decoration: none;color: black;">Chatroom</a></li>
+            <li id="A"><a href="About.htm" style="text-decoration: none;color: black;">About</a></li>
+            <li id="P"><a href="Profile.html" style="text-decoration: none;color: black;">Profile</a></li>
+        </ul>
+    </nav><br><br><br>
+    
+    <h1>Welcome to Anime X</h1>
+    <h2>Watch anime here</h2>
+    <h2>And meet other Otakus and vibe</h2>
+    
+    <div class="input-group">
+        <input type="text" id="username" placeholder="Username"><br>
+        <span class="error" id="usernameError">Username must be 3-20 characters</span>
+    </div>
+    
+    <div class="input-group">
+        <input type="password" id="password" placeholder="Password"><br>
+        <span class="password-strength" id="passwordStrength"></span>
+        <span class="error" id="passwordError">Password must be at least 6 characters</span>
+    </div>
+    
+    <span class="success" id="successMessage"></span>
+    <span class="loading" id="loadingMessage">Creating account...</span>
+    
+    <a href="Signup.html"><button class="sign">SIGN UP</button></a>
+     <button class="log" onclick="validateLogin()">LOG IN</button><br><br>
+
+        <script>
+            function validateLogin() {
+                let isValid = true;
+                
+                // Get input values
+                const email = document.getElementById('email');
+                const dob = document.getElementById('dob');
+                const emailError = document.getElementById('emailError');
+                const dobError = document.getElementById('dobError');
+                
+                // Reset errors
+                email.classList.remove('invalid');
+                dob.classList.remove('invalid');
+                emailError.style.display = 'none';
+                dobError.style.display = 'none';
+                
+                // Validate email
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.value || !emailPattern.test(email.value)) {
+                    email.classList.add('invalid');
+                    emailError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate date of birth
+                if (!dob.value) {
+                    dob.classList.add('invalid');
+                    dobError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    // Check if user is at least 13 years old
+                    const today = new Date();
+                    const birthDate = new Date(dob.value);
+                    const age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    
+                    if (age < 13) {
+                        dob.classList.add('invalid');
+                        dobError.textContent = 'You must be at least 13 years old';
+                        dobError.style.display = 'block';
+                        isValid = false;
+                    }
+                }
+                
+                // If all validation passes, redirect
+                if (isValid) {
+                    alert('Login successful!');
+                    window.location.href = 'Homepage.html';
+                }
+            }
+            
+            // Real-time validation
+            document.getElementById('email').addEventListener('blur', function() {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const emailError = document.getElementById('emailError');
+                
+                if (this.value && !emailPattern.test(this.value)) {
+                    this.classList.add('invalid');
+                    emailError.style.display = 'block';
+                } else {
+                    this.classList.remove('invalid');
+                    emailError.style.display = 'none';
+                }
+            });
+        </script>
+    </body>
+</html>
